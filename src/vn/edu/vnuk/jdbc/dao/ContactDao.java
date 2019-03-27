@@ -139,6 +139,50 @@ public class ContactDao {
 		
 	}
 	
+	public void update(Long id, Contact newContact) throws SQLException {
+		
+		Contact contact = new Contact();
+		
+		String sqlQuery = "update contacts set name = ?, email = ?, address = ? where id = " + id;
+		
+		PreparedStatement statement;
+		
+		try {
+			contact = read(id);
+			statement = connection.prepareStatement(sqlQuery);
+			
+			statement.setString(1, newContact.getName());
+			statement.setString(2, newContact.getEmail());
+			statement.setString(3, newContact.getAddress());
+				
+			if(contact != null) {
+				int rowsUpdated = statement.executeUpdate();
+				
+				if(rowsUpdated > 0) {
+					System.out.println("Updated for ID number: " + id);
+				} else {
+					System.out.println("Error: ID NOT FOUND!");
+				}
+			} else {
+				System.out.println("Error: ID NOT FOUND!");
+			}
+			
+			statement.close();
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+			connection.close();
+		}
+		
+		finally {
+			connection.close();
+		}
+		
+		
+		
+	}
+	
 	public void delete(Long id) throws SQLException {
 		
 		Contact contact = new Contact();
@@ -152,12 +196,12 @@ public class ContactDao {
 			contact = read(id);
 			statement = connection.prepareStatement(sqlQuery);
 			
-			int affectedRow = statement.executeUpdate();
+			int rowsUpdated = statement.executeUpdate();
 			
-			if(affectedRow == 0) {
+			if(rowsUpdated == 0) {
 				System.out.println("Error: ID NOT FOUND!");
 			} else {
-				System.out.println("Complete delete row number: " + affectedRow);
+				System.out.println("Complete delete " + rowsUpdated + " row!");
 			}
 			
 			
