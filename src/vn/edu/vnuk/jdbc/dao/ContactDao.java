@@ -139,6 +139,38 @@ public class ContactDao {
 		
 	}
 	
+	public void delete(Long id) throws SQLException {
+		Contact contact = new Contact();
+		
+		String sqlQuery = "delete * from contacts where id =" + id
+				+ ";";
+		
+		PreparedStatement statement;
+		
+		try {
+			contact = read(id);
+			statement = connection.prepareStatement(sqlQuery);
+			
+			if(!contact.equals(null)) {
+				ResultSet results = statement.executeQuery();
+			} else {
+				System.out.println("Error: ID NOT FOUND!");
+			}
+			
+			statement.close();
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+			connection.close();
+		}
+		
+		finally {
+			connection.close();
+		}
+		
+	}
+	
 	private Contact buildContact(ResultSet results) throws SQLException {
 		Contact	contact = new Contact();
 		
