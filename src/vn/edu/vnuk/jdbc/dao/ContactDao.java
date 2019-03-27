@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import vn.edu.vnuk.jdbc.ConnectionFactory;
@@ -61,6 +62,7 @@ public class ContactDao {
 		}
 	}
 	
+	@SuppressWarnings("finally")
 	public List<Contact> read() throws SQLException {
 		
 		List<Contact> contacts = new ArrayList<Contact>();
@@ -73,13 +75,16 @@ public class ContactDao {
 		try {
 			
 			statement = connection.prepareStatement(sqlQuery);
-
 			
             // 	Executing statement
 			ResultSet results = statement.executeQuery();
+			
+			while(results.next()) {
+				contacts.add(buildContact(results));
+			}
+			
+			results.close();
 			statement.close();
-	        System.out.println("   DATA successfully loaded in \'categories\'");
-		
 		}
 		
 		catch (Exception e) {
@@ -94,6 +99,22 @@ public class ContactDao {
 			connection.close();
 			return contacts;
 		}
+	}
+	
+	private Contact buildContact(ResultSet results) throws SQLException {
+		Contact	contact = new Contact();
+		
+		contact.setId(results.getLong("id"));
+		contact.setName(results.getString("name"));
+		contact.setAddress(results.getString("address"));
+		contact.setEmail(results.getString("email"));
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(results.getDate("date_of_register"));
+		
+		contact.setDateOfRegister(calendar);
+		
+		return contact;
 	}
 }
 
