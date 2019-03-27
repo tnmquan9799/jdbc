@@ -7,13 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Scanner;
 
 import vn.edu.vnuk.jdbc.ConnectionFactory;
 import vn.edu.vnuk.jdbc.model.Contact;
 
 public class ContactDao {
 	private Connection connection;
-	
+    Scanner sc = new Scanner(System.in);
+
 	public ContactDao() {
 		this.connection = new ConnectionFactory().getConnection();
 	}
@@ -99,6 +101,45 @@ public class ContactDao {
 			connection.close();
 			return contacts;
 		}
+	}
+	
+	@SuppressWarnings("finally")
+	public Contact read(Long id) throws SQLException {
+		Contact contact = new Contact();
+		
+		System.out.println("Input id you want to read: ");
+		id = sc.nextLong();
+		
+		String sqlQuery = "select * from contacts where id =" + id
+				+ ";";
+		
+		PreparedStatement statement;
+		
+		try {
+			statement = connection.prepareStatement(sqlQuery);
+			
+			ResultSet results = statement.executeQuery();
+			
+			if (results.next()) {
+				
+				contact = buildContact(results);
+			}
+				
+			results.close();
+			statement.close();
+		}
+		
+		catch(Exception e) {
+			e.printStackTrace();
+	        connection.close();
+		}
+		
+		finally {
+			
+			return contact;
+		}
+		
+		
 	}
 	
 	private Contact buildContact(ResultSet results) throws SQLException {
