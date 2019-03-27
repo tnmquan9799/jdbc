@@ -1,14 +1,24 @@
 package vn.edu.vnuk.jdbc.test;
 
+import java.sql.SQLException;
+import java.util.Scanner;
+
 import vn.edu.vnuk.jdbc.dao.ContactDao;
 import vn.edu.vnuk.jdbc.model.Contact;
 
 public class TestReadContact {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
+		long id;
+	    Scanner sc = new Scanner(System.in);
+		
+
+		System.out.println("Input id you want to read: ");
+		id = sc.nextLong();
+		
 		
 		ContactDao contactDao = new ContactDao();
-		Contact contact = new Contact();
+		Contact contact = contactDao.read(id);
 		
 		System.out.println(String.format("ID: %o", contact.getId()));
 		System.out.println(String.format("Name: %s", contact.getName()));

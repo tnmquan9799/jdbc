@@ -107,9 +107,6 @@ public class ContactDao {
 	public Contact read(Long id) throws SQLException {
 		Contact contact = new Contact();
 		
-		System.out.println("Input id you want to read: ");
-		id = sc.nextLong();
-		
 		String sqlQuery = "select * from contacts where id =" + id
 				+ ";";
 		
