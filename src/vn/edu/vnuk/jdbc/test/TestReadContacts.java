@@ -19,6 +19,7 @@ public class TestReadContacts {
 			System.out.println(String.format("Email: %s", contact.getEmail()));
 			System.out.println(String.format("Address: %s", contact.getAddress()));
 			System.out.println(String.format("Date Of Register: %tD", contact.getDateOfRegister()));
+			System.out.println();
 			
 		}
 		

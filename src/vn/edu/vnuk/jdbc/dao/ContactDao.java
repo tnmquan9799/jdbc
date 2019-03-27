@@ -140,9 +140,10 @@ public class ContactDao {
 	}
 	
 	public void delete(Long id) throws SQLException {
+		
 		Contact contact = new Contact();
 		
-		String sqlQuery = "delete * from contacts where id =" + id
+		String sqlQuery = " delete from contacts where id = " + id
 				+ ";";
 		
 		PreparedStatement statement;
@@ -151,11 +152,15 @@ public class ContactDao {
 			contact = read(id);
 			statement = connection.prepareStatement(sqlQuery);
 			
-			if(!contact.equals(null)) {
-				ResultSet results = statement.executeQuery();
-			} else {
+			int affectedRow = statement.executeUpdate();
+			
+			if(affectedRow == 0) {
 				System.out.println("Error: ID NOT FOUND!");
+			} else {
+				System.out.println("Complete delete row number: " + affectedRow);
 			}
+			
+			
 			
 			statement.close();
 		}

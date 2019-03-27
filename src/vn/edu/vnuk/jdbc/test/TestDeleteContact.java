@@ -18,6 +18,7 @@ public class TestDeleteContact {
 		ContactDao contactDao = new ContactDao();
 
 		contactDao.delete(id);
+		
 	}
 
 }
